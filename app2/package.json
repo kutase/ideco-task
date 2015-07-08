@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "kutase123",
+  "author": "kutase123 <kutase123@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "async": "^1.3.0",

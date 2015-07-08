@@ -6,7 +6,7 @@ var crypto = require('crypto'),
 	util = require('util'),
 	models = require('./models.js');
 
-var getIntFromStr = function (str) {
+var getIntFromWord = function (str) {
 	const divider = Math.pow(10, 21);
 	var md5 = crypto.createHash('md5').update(str);
 	var res = parseInt(md5.digest('hex'),16)/divider+'';
@@ -50,8 +50,9 @@ var updateWord = function (req, res) {
 
 	models.Words.findOne({where: {word: old_word}})
 	.then(function (record) {
-		record.update({word: new_word})
+		record.updateAttributes({word: new_word}, {fields: ['word', 'weight']})
 		.then(function(updated) {
+			var updated = models.serialize(updated, ['word', 'weight']);
 			res.status(200).json(updated);
 		})
 		.catch(function(err){
@@ -82,7 +83,7 @@ var delWord = function (req, res) {
 	})
 }
 
-exports.getIntFromStr = getIntFromStr;
+exports.getIntFromWord = getIntFromWord;
 exports.getWords = getWords;
 exports.addWord = addWord;
 exports.updateWord = updateWord;

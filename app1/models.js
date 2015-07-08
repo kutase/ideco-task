@@ -8,7 +8,7 @@ var Sequelize = require('sequelize'),
 
 	controller = require('./controller.js');
 
-var sequelize = new Sequelize('', '', '', {
+var sequelize = new Sequelize('', '', '', { // DB install
 	host: 'localhost',
 	dialect: 'sqlite',
 
@@ -46,11 +46,11 @@ Words = sequelize.define('Words', {
 }, {
 	hooks: {
 		beforeValidate: function (table, options) {
-			table.weight = controller.getIntFromStr(table.word);
+			table.weight = controller.getIntFromWord(table.word);
 			return sequelize.Promise.resolve(table);
 		},
-		beforeUpdate: function (table, done) {
-			table.weight = controller.getIntFromStr(table.word);
+		beforeUpdate: function (table, options) {
+			table.weight = controller.getIntFromWord(table.word);
 			return sequelize.Promise.resolve(table);
 		}
 	}
@@ -59,3 +59,4 @@ Words = sequelize.define('Words', {
 exports.arrToJson = arrToJson;
 exports.Words = Words;
 exports.serialize = serialize;
+exports.sequelize = sequelize;

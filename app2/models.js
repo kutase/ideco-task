@@ -49,7 +49,7 @@ Words = sequelize.define('Words', {
 			table.weight = controller.getIntFromStr(table.word);
 			return sequelize.Promise.resolve(table);
 		},
-		beforeUpdate: function (table, done) {
+		beforeUpdate: function (table, options) {
 			table.weight = controller.getIntFromStr(table.word);
 			return sequelize.Promise.resolve(table);
 		}

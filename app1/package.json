@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "kutase123",
+  "author": "kutase123 <kutase123@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.13.2",

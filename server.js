@@ -7,6 +7,7 @@ var express = require('express'),
 	routesAppTwo = require('./app2/routes/index.js'),
 	expressValidator = require('express-validator'),
 	bodyParser = require('body-parser'),
+	models = require('./app1/models'),
 
 	debug = require('debug'),
 	error = debug('main:err'),
@@ -24,6 +25,11 @@ app.use(expressValidator({
 app.use(express.static('./public'));
 app.use('/', routesAppOne);
 app.use('/', routesAppTwo);
+models.sequelize.sync()
+.then(function () {
+	log('Database was successfully synchronized.')
+})
+
 
 http.listen(3000, function(){
 	log("listening on *:3000");
