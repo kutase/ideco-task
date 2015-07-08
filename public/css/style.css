@@ -1,0 +1,31 @@
+.form-inline {
+	margin-bottom: 10px;
+}
+
+.table {
+	/*width: 280px;*/
+	/*border: 1px solid #ddd;	*/
+}
+
+body {
+	padding: 15px;
+}
+
+.fa-pencil {
+	color: #337ab7;
+	cursor: pointer;
+}
+
+.fa-pencil:hover {
+	text-shadow: 1px 1px 1px #ccc;
+}
+
+.fa-trash {
+	color: #FF3F30;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
+.fa-trash:hover {
+	text-shadow: 1px 1px 1px #ccc;
+}

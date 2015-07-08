@@ -1,0 +1,21 @@
+{
+  "name": "app1",
+  "version": "0.0.1",
+  "description": "ideco task",
+  "main": "app.js",
+  "repository": "https://bitbucket.org/kutase123/ideco-task",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kutase123",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "debug": "^2.2.0",
+    "express": "^4.13.1",
+    "express-validator": "^2.13.0",
+    "lodash": "^3.10.0",
+    "sequelize": "^3.3.2",
+    "sqlite3": "^3.0.8"
+  }
+}
