@@ -1,61 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>App One of ideco task</title>
+	<title>Ideco task</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
 
-  <script src="/lib/jquery.min.js"></script>
-  <script src="/lib/lodash.min.js"></script>
-  <script src="/lib/bootstrap.min.js"></script>
-  <script src="/lib/knockout.js"></script>
-  <script src="/lib/ko.mapping.js"></script>
+	<script src="/lib/jquery.min.js"></script>
+	<script src="/lib/lodash.min.js"></script>
+	<script src="/lib/bootstrap.min.js"></script>
+	<script src="/lib/knockout.js"></script>
+	<script src="/lib/pager.js"></script>
+	<script src="/lib/ko.mapping.js"></script>
 
-  <script src="/js/util.js"></script>
-  <script src="/js/bindingHandlers.js"></script>
-  <script src="/js/index.js"></script>
+	<script src="/js/util.js"></script>
+	<script src="/js/bindingHandlers.js"></script>
+	<script src="/js/index.js"></script>
 
 </head>
-  <body>
-    <div class="container-fluid">
-      <h2>App One</h2>
+	<body>
+		<div class="navbar navbar-inverse wrapper_minus">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse navbar-inverse-collapse">
+				<ul class="nav navbar-nav">
+					<li data-bind="css: {active: navbarSelect() == 1}"><a data-bind="page-href:'/app1'">App One</a></li>
+					<li data-bind="css: {active: navbarSelect() == 2}"><a data-bind="page-href:'/app2'">App Two</a></li>
+				</ul>
+			</div>
+		</div>
 
-      <form class="form-inline" data-bind="submit: app.words.addWord" autocomplete="off">
-        <fieldset data-bind="with: form.addWord">
-          <div class="form-group">
-            <input type="text" class="form-control" data-bind="value: word" placeholder="Word" required>
-          </div>
-          <button type="submit" class="btn btn-default">Add word</button>
-        </fieldset>
-      </form>
+		<div class="container-fluid">
+			<div data-bind="page: {id: 'app1', title: 'App One', sourceOnShow: '/app1.html', beforeShow: function(){navbarSelect(1)}}" style="display:none;"></div>
+			<div data-bind="page: {id: 'app2', title: 'App Two', sourceOnShow: '/app2.html', beforeShow: function(){navbarSelect(2)}}" style="display:none;"></div>
+		</div>
 
-      <table class="table table-striped table-bordered table-hover table-condensed">
-        <thead>
-          <th>Word</th>
-          <th>Weight</th>
-        </thead>
-        <tbody>
-          <!-- ko if: app.wordsArr().length > 0 -->
-            <!-- ko foreach: app.wordsArr() -->
-              <tr>
-                <td>
-                  <span data-bind="text: word, contentEditable: app.wordEditable"></span>
-                  <a data-bind="click: function(){app.words.editWord(word)}"><i class="fa fa-pencil"></i></a>
-                </td>
-                <td>
-                  <span data-bind="text:weight"></span>
-                  <a data-bind="click: function(){app.words.delWord(word)}"><i class="fa fa-trash"></i></a>
-                </td>
-              </tr>
-            <!-- /ko -->
-          <!-- /ko -->
-        </tbody>
-      </table>
-    </div>
-  </body>
+	</body>
 </html>

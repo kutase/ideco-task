@@ -17,7 +17,7 @@ router.route('/words')
 		controller.getWords(req, res);
 	})
 	.post(function(req, res) {
-		req.checkBody('word', 'Word must be not empty and include only askii symbols.')
+		req.checkBody('word', 'Word must not be empty and include only askii symbols.')
 			.isWord().isAscii();
 		var errors = req.validationErrors();
 		if (errors) {
@@ -28,9 +28,9 @@ router.route('/words')
 		controller.addWord(req, res);
 	})
 	.put(function(req, res) {
-		req.checkBody('old_word', 'Word must be not empty and include only askii symbols.')
+		req.checkBody('old_word', 'Word must not be empty and include only askii symbols.')
 			.isWord().isAscii();
-		req.checkBody('new_word', 'Word must be not empty and include only askii symbols.')
+		req.checkBody('new_word', 'Word must not be empty and include only askii symbols.')
 			.isWord().isAscii();
 
 		var errors = req.validationErrors();
@@ -42,7 +42,7 @@ router.route('/words')
 		controller.updateWord(req, res);
 	})
 	.delete(function(req, res) {
-		req.checkBody('word', 'Word must be not empty and include only askii symbols.')
+		req.checkBody('word', 'Word must not be empty and include only askii symbols.')
 			.isWord().isAscii();
 		var errors = req.validationErrors();
 		if (errors) {

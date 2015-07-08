@@ -3,7 +3,7 @@
 }
 
 .table {
-	/*width: 280px;*/
+	width: 300px;
 	/*border: 1px solid #ddd;	*/
 }
 
@@ -28,4 +28,27 @@ body {
 
 .fa-trash:hover {
 	text-shadow: 1px 1px 1px #ccc;
+}
+
+.input-sm {
+	height: 25px;
+}
+
+.fa-form-close {
+  position: relative;
+  left: 142px;
+  bottom: 22px;
+  color: #FF3F30;
+  cursor: pointer;
+}
+
+.fa-form-ok {
+  position: relative;
+  left: 143px;
+  bottom: 22px;
+  cursor: pointer;
+}
+
+.word-edit {
+	height: 26px;
 }

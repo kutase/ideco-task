@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <h2>App Two</h2>
+
+<div class="panel panel-default" data-bind="visible: app.text.hasWeight">
+  <div class="panel-body">Total words weight: <strong><span data-bind="text: app.text.textWeight"></span></strong></div>
+</div>
+
+<div class="form-group">
+  <label class="control-label" for="inputGlobalChat">Enter a text here</label>
+  <textarea class="form-control" rows="3" id="inputGlobalChat" required data-bind="value: app.text.currentText"></textarea>
+</div>
+<div class="form-group">
+  <button type="submit" class="btn btn-default" data-bind="click: app.text.send, disabled: !app.text.currentText()">Send</button>
+</div>
+
+</div>
