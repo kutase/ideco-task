@@ -1,11 +1,27 @@
-var crypto = require('crypto'),
-	debug = require('debug'),
+var debug = require('debug'),
 	log = debug('controller:log'),
 	error = debug('controller:err'),
 	async = require('async'),
 
 	util = require('util'),
 	models = require('./models.js');
+
+var errorHandler = function (err) {
+	if (err.name == 'SequelizeUniqueConstraintError') {
+		var resErrors = [];
+		err.errors.forEach(function (item) {
+			var obj = {};
+			obj[item.path] = {
+				message: _.capitalize(item.message),
+				value: item.value
+			}
+			resErrors.push(obj)
+		})
+		return resErrors;
+	} else {
+		return err;
+	}
+}
 
 var getWeight = function (word, done) {
 	models.Words.findOne({where: {word: word}})
@@ -30,13 +46,17 @@ var getSumWeight = function (req, res, done) {
 	async.map(words, getWeight, function (err, results) {
 		if (err) {
 			error(err);
-			res.status(400).json({'status': 'Words table is empty.'});
+			res.status(400).json({'status': errorHandler(err)});
 		} else {
 			var sumWeight = 0;
 			results.forEach(function (item) {
 				sumWeight += item;
 			});
-			res.status(200).json({sumWeight: sumWeight});
+			if (sumWeight) {
+				res.status(200).json({sumWeight: sumWeight});
+			} else {
+				res.status(200).json({sumWeight: 'Undefined'});
+			}
 		}
 	})
 }

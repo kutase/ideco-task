@@ -19,6 +19,14 @@ app.use(expressValidator({
 		isWord: function (val) {
 			return !/\s+/.test(val);
 		}
+	},
+	errorFormatter: function(param, msg, value) {
+		var obj = {};
+		obj[param] = {
+			message: _.capitalize(msg),
+			value: value
+		}
+		return obj;
 	}
 }));
 

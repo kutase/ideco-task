@@ -4,12 +4,17 @@ var	form = {
 	addWord: {
 		word: ko.observable(""),
 		error: {
-			word: ko.observableArray([]),
+			word: ko.observable(null),
 		},
 		default: {
 			word: ""
 		}
 	},
+	sendText: {
+		error: {
+			text: ko.observable(null)
+		}
+	}
 }
 
 var app = {
@@ -24,6 +29,7 @@ var app = {
 			var text = app.text.currentText;
 			if (text()) {
 				console.log("app.text.send@message:",text());
+				form.sendText.error.text(null);
 				$.post('/text',{text: text()})
 				.done(function(data) {
 					console.log("text.send@success:",data);
@@ -34,10 +40,12 @@ var app = {
 				.fail(function(xhr, textStatus, errorThrown) {
 					var err = JSON.parse(xhr.responseText);
 					console.log("text.send@err:",err);
+					form.sendText.error.text(err.status[0].text);
 					// util.insert(err,form.addWord.error);
 				});  
 			} else {
-				console.log("text.send@err: message is blank");
+				console.log("text.send@err: Text is blank.");
+				form.sendText.error.text({message: 'Field must not be blank.'});
 			}
 		}
 	},
@@ -61,6 +69,7 @@ var app = {
 			var formData = util.extract(form.addWord);
 			console.log(formData);
 			util.refreshErrors(form.addWord.error);
+			form.addWord.error.word(null);
 			$.post('/words',formData)
 			.done(function(data) {
 				console.log("addWord@success:",data);
@@ -68,17 +77,19 @@ var app = {
 				util.insert(data,word);
 				app.wordsArr.unshift(word);
 				util.clean(form.addWord);
+				form.addWord.error.word(null);
 				console.log(app.wordsArr());
 			})
 			.fail(function(xhr, textStatus, errorThrown) {
 				var err = JSON.parse(xhr.responseText);
 				console.log("addWord@err:",err);
-				util.insert(err,form.addWord.error);
+				form.addWord.error.word(err.status[0].word);
+				// util.insert(err.status,form.addWord.error);
 			});
 		},
 		editWord: function(val){
 			console.log(app.wordEditable());
-			$.put('/words',{old_word: app.wordEditable(), new_word: app.editedWord()})
+			$.put('/words',{oldWord: app.wordEditable(), newWord: app.editedWord()})
 			.done(function(data) {
 				console.log("editWord@success:",data);
 				val.word(data.word);
@@ -89,7 +100,7 @@ var app = {
 			.fail(function(xhr, textStatus, errorThrown) {
 				var err = JSON.parse(xhr.responseText);
 				console.log("editWord@err:",err);
-				word(app.wordEditable());
+				val.word(app.wordEditable());
 			});
 		},
 		delWord: function(word){

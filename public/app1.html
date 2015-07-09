@@ -3,8 +3,13 @@
 
   <form class="form-inline" data-bind="submit: app.words.addWord" autocomplete="off">
     <fieldset data-bind="with: form.addWord">
-      <div class="form-group">
+      <div class="form-group" data-bind="css: {'has-error': error.word()}">
         <input type="text" class="form-control" data-bind="value: word" placeholder="Word" required>
+        <div class="alert alert-danger" data-bind="visible: error.word()">
+          <!-- ko with: error.word -->
+            <p data-bind="text:$data.message"></p>
+          <!-- /ko -->
+        </div>
       </div>
       <button type="submit" class="btn btn-default">Add word</button>
     </fieldset>
