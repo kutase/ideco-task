@@ -3,10 +3,12 @@ process.env.DEBUG = 'main:*,router:*,models:*,controller:*'; // Debug mode
 var express = require('express'),
 	app = express(),
 	http = require('http').Server(app),
-	routesAppOne = require('./app1/routes/index.js'),
-	routesAppTwo = require('./app2/routes/index.js'),
 	expressValidator = require('express-validator'),
 	bodyParser = require('body-parser'),
+	lodash = require('lodash'),
+
+	routesAppOne = require('./app1/routes/index.js'),
+	routesAppTwo = require('./app2/routes/index.js'),
 	models = require('./app1/models'),
 
 	debug = require('debug'),
