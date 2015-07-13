@@ -24,6 +24,6 @@ models.sequelize.sync()
 	log('Database was successfully synchronized.')
 })
 
-http.listen(1337, function(){
+http.listen(3000, function(){
 	log("listening on *:3000");
 });

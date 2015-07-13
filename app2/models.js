@@ -59,3 +59,4 @@ Words = sequelize.define('Words', {
 exports.arrToJson = arrToJson;
 exports.Words = Words;
 exports.serialize = serialize;
+exports.sequelize = sequelize;
