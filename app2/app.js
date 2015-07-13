@@ -19,6 +19,11 @@ app.use(expressValidator());
 app.use(express.static('../public'));
 app.use('/', routes);
 
+models.sequelize.sync()
+.then(function () {
+	log('Database was successfully synchronized.')
+})
+
 http.listen(1337, function(){
 	log("listening on *:3000");
 });

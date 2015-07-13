@@ -43,9 +43,8 @@ app.use('/', routesAppTwo);
 
 models.sequelize.sync()
 .then(function () {
-	log('Database was successfull synchronized.')
+	log('Database was successfully synchronized.')
 })
-
 
 http.listen(3000, function(){
 	log("listening on *:3000");
