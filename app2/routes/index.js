@@ -8,21 +8,25 @@ var express = require('express'),
 	models = require('../models.js'),
 	controller = require('../controller.js');
 
-// router.get('/', function(req, res) {
-// 	res.sendFile('index.html');
-// })
-
 router.route('/text')
 	.post(function(req, res) {
-		req.checkBody('text', 'Text must not be empty and include only askii symbols.')
+		req.checkBody('text', 'Text must not be empty and must include only ascii symbols.')
 			.notEmpty().isAscii();
 		var errors = req.validationErrors();
 		if (errors) {
-			res.status(400).json(errors);
+			res.status(400).json({status: errors});
 			return
 		}
 
-		controller.getSumWeight(req, res);
+		var text = req.body.text;
+		var words = text.replace(/\s+/g, ' ').replace(/(\.|\,)/g, '').split(' '); // '.' and ',' -> ''
+		controller.getSumWeight(words, function (err, data) {
+			if (err) {
+				res.status(err.code).json({status: err.error});
+			} else {
+				res.status(200).json(data);
+			}
+		});
 	})
 
 module.exports = router;

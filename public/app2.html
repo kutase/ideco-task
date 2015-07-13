@@ -7,10 +7,11 @@
 
 <div class="form-group" data-bind="css: {'has-error': form.sendText.error.text()}">
 	<label class="control-label" for="inputGlobalChat">Enter a text here</label>
-	<textarea class="form-control" rows="3" id="inputGlobalChat" required data-bind="value: app.text.currentText"></textarea>
+	<textarea class="form-control" rows="3" id="inputGlobalChat" required autofocus data-bind="value: app.text.currentText, valueUpdate: 'afterkeydown', enterkey: app.text.send">
+	</textarea>
 	<div class="alert alert-danger" data-bind="visible: form.sendText.error.text()">
 		<!-- ko with: form.sendText.error.text -->
-			<p data-bind="text:$data.message"></p>
+			<p data-bind="text: $data.message"></p>
 		<!-- /ko -->
 	</div>
 </div>

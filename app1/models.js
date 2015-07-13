@@ -22,7 +22,7 @@ var serialize = function (object, fields) {
   return newObject;
 }
 
-var arrToJson = function(arr, serialize_list) {
+var arrToJson = function(arr, serialize_list) { // [{Sequelize obj}] -> [{object}]
 	var res = _.map(arr, function (e) {
 		if (serialize_list) {
 			return exports.serialize(e.toJSON(), serialize_list);
@@ -33,7 +33,7 @@ var arrToJson = function(arr, serialize_list) {
 	return res;
 }
 
-Words = sequelize.define('Words', {
+Words = sequelize.define('Words', { // Word model
 	word: {
 		type: Sequelize.STRING(128),
 		allowNull: false,
@@ -45,7 +45,7 @@ Words = sequelize.define('Words', {
 	}
 }, {
 	hooks: {
-		beforeValidate: function (table, options) {
+		beforeValidate: function (table, options) { // Weight auto defenition
 			table.weight = controller.getIntFromWord(table.word);
 			return sequelize.Promise.resolve(table);
 		},

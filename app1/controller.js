@@ -7,7 +7,7 @@ var crypto = require('crypto'),
 	util = require('util'),
 	models = require('./models.js');
 
-var getIntFromWord = function (str) {
+var getIntFromWord = function (str) { // 'str' -> int
 	const divider = Math.pow(10, 21);
 	var md5 = crypto.createHash('md5').update(str);
 	var res = parseInt(md5.digest('hex'),16)/divider+'';
@@ -31,79 +31,75 @@ var errorHandler = function (err) {
 	}
 }
 
-var getWords = function (req, res) {
-	models.Words.findAll({order:[['id','DESC']]}) // Выборка SQL в обратном порядке
+var getWords = function (done) {
+	models.Words.findAll({order:[['id','DESC']]})
 	.then(function(words) {
 		if (!words.length) {
 			error('getWords:', 'Words table is empty.');
-			res.status(403).json({'status': {message: 'Words table is empty.'}});
+			done({code: 403, error: {message: 'Words table is empty.'}});
 		} else {
 			var words = models.arrToJson(words, ['word', 'weight']);
-			res.json({'words': words});
+			done(null, {words: words});
 		}
 	})
 	.catch(function(err) {
-		error('getWords:',err);
-		res.status(400).json({'status': err});
+		error('getWords:', err);
+		done({code: 400, status: err});
 	})
 }
 
-var addWord = function (req, res) {
-	var word = req.body.word;
+var addWord = function (word, done) {
 	models.Words.create({word: word})
 	.then(function(record){
-		log('addWord@success:',record.toJSON());
+		log('addWord@success:', record.toJSON());
 		var record = models.serialize(record, ['word', 'weight']);
-		res.status(200).json(record);
+		done(null, record);
 	})
 	.catch(function(err) {
-		error('addWord:',err);
-		res.status(400).json({'status': errorHandler(err)});
+		error('addWord:', err);
+		done({code: 400, error: errorHandler(err)});
 	})
 }
 
-var updateWord = function (req, res) {
-	var oldWord = req.body.oldWord;
-	var newWord = req.body.newWord;
+var updateWord = function (props, done) {
+	var oldWord = props.oldWord;
+	var newWord = props.newWord;
 
 	models.Words.findOne({where: {word: oldWord}})
 	.then(function (record) {
 		record.updateAttributes({word: newWord}, {fields: ['word', 'weight']})
 		.then(function(updated) {
 			var updated = models.serialize(updated, ['word', 'weight']);
-			res.status(200).json(updated);
+			done(null, updated);
 		})
 		.catch(function(err){
-			error('updateWord:',err);
-			res.status(400).json({'status': errorHandler(err)});
+			error('updateWord:', err);
+			done({code: 400, error: errorHandler(err)});
 		})
 	})
 	.catch(function(err) {
-		error('updateWord:',err);
-		res.status(400).json({'status': errorHandler(err)});
+		error('updateWord:', err);
+		done({code: 400, error: errorHandler(err)});
 	})
 }
 
-var delWord = function (req, res) {
-	var word = req.body.word;
-
+var delWord = function (word, done) {
 	models.Words.findOne({where: {word: word}})
 	.then(function (record) {
 		if (!record) {
 			var err = "Word's record does not exists.";
-			error('delWord:',err);
-			res.status(400).json({'status': {message: err}});
+			error('delWord:', err);
+			done({code: 400, error: {message: err}});
 		} else {
 			record.destroy()
 			.then(function() {
-				res.status(200)
-				.json({status: util.format("Word '%s' was successful delited.", record.toJSON().word)})
+				done(null, {status: util.format("Word '%s' was successfuly deleted.", record.toJSON().word)})
 			})
 		}
 	})
 	.catch(function(err) {
-		error('delWord:',err);
-		res.status(400).json({'status': err});
+		error('delWord:', err);
+		done({code: 400, error: err});
 	})
 }
 

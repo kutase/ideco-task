@@ -5,13 +5,13 @@
     <fieldset data-bind="with: form.addWord">
       <div class="form-group" data-bind="css: {'has-error': error.word()}">
         <input type="text" class="form-control" data-bind="value: word" placeholder="Word" required>
+        <button type="submit" class="btn btn-default">Add word</button>
         <div class="alert alert-danger" data-bind="visible: error.word()">
           <!-- ko with: error.word -->
-            <p data-bind="text:$data.message"></p>
+            <p data-bind="text: $data.message"></p>
           <!-- /ko -->
         </div>
       </div>
-      <button type="submit" class="btn btn-default">Add word</button>
     </fieldset>
   </form>
 
@@ -25,19 +25,19 @@
         <!-- ko foreach: app.wordsArr -->
           <tr>
             <td>
-              <div data-bind="if: app.wordEditable() != word()">
+              <div data-bind="if: app.currentWord() != word()">
                 <span data-bind="text: word"></span>
-                <a data-bind="click: function(){app.wordEditable(word());app.editedWord(word())}">
+                <a data-bind="click: function(){app.currentWord(word()); app.editedWord(word())}">
                   <i class="fa fa-pencil"></i>
                 </a>
               </div>
-              <!-- ko if: app.wordEditable() == word() -->
+              <!-- ko if: app.currentWord() == word() -->
                 <div class="word-edit">
-                  <input class="form-control input-sm" data-bind="value: app.editedWord" autofocus>
+                  <input class="form-control input-sm" data-bind="value: app.editedWord, enterkey: function(){app.words.editWord($context.$data);}, valueUpdate: 'afterkeydown'" autofocus>
                   <a data-bind="click: function(){app.words.editWord($context.$data);}">
                     <i class="fa fa-check fa-form-ok"></i>
                   </a>
-                  <a data-bind="click: function(){word(app.wordEditable()); app.wordEditable(null); app.editedWord(null)}">
+                  <a data-bind="click: function(){word(app.currentWord()); app.currentWord(null); app.editedWord(null)}">
                     <i class="fa fa-times fa-form-close"></i>
                   </a>
                 </div>

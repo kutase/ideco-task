@@ -5,7 +5,7 @@ var express = require('express'),
 	http = require('http').Server(app),
 	expressValidator = require('express-validator'),
 	bodyParser = require('body-parser'),
-	lodash = require('lodash'),
+	_ = require('lodash'),
 
 	routesAppOne = require('./app1/routes/index.js'),
 	routesAppTwo = require('./app2/routes/index.js'),
@@ -33,11 +33,17 @@ app.use(expressValidator({
 }));
 
 app.use(express.static('./public'));
+
+app.get('/', function(req, res) {
+	res.sendFile('index.html');
+})
+
 app.use('/', routesAppOne);
 app.use('/', routesAppTwo);
+
 models.sequelize.sync()
 .then(function () {
-	log('Database was successfully synchronized.')
+	log('Database was successfull synchronized.')
 })
 
 

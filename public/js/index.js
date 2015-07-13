@@ -19,7 +19,7 @@ var	form = {
 
 var app = {
 	wordsArr: ko.observableArray([]),
-	wordEditable: ko.observable(null),
+	currentWord: ko.observable(null),
 	editedWord: ko.observable(null),
 	text: {
 		currentText: ko.observable(""),
@@ -88,19 +88,18 @@ var app = {
 			});
 		},
 		editWord: function(val){
-			console.log(app.wordEditable());
-			$.put('/words',{oldWord: app.wordEditable(), newWord: app.editedWord()})
+			$.put('/words',{oldWord: app.currentWord(), newWord: app.editedWord()})
 			.done(function(data) {
 				console.log("editWord@success:",data);
 				val.word(data.word);
 				val.weight(data.weight);
-				app.wordEditable(null);
+				app.currentWord(null);
 				app.editedWord(null);
 			})
 			.fail(function(xhr, textStatus, errorThrown) {
 				var err = JSON.parse(xhr.responseText);
 				console.log("editWord@err:",err);
-				val.word(app.wordEditable());
+				val.word(app.currentWord());
 			});
 		},
 		delWord: function(word){

@@ -8,32 +8,41 @@ var express = require('express'),
 	models = require('../models.js'),
 	controller = require('../controller.js');
 
-var msgNEisAcii = 'Word must not be empty and must include only askii symbols.';
-
-router.get('/', function(req, res) {
-	res.sendFile('index.html');
-})
+const msgNEisAlphanum = 'Word must not be empty and must include only alphanumeric symbols.';
 
 router.route('/words')
 	.get(function(req, res) {
-		controller.getWords(req, res);
+		controller.getWords(function (err, data) {
+			if (err) {
+				res.status(err.code).json({status: err.error});
+			} else {
+				res.status(200).json(data);
+			}
+		});
 	})
 	.post(function(req, res) {
-		req.checkBody('word', msgNEisAcii)
-			.isWord().isAscii();
+		req.checkBody('word', msgNEisAlphanum)
+			.isWord().isAlphanumeric();
 		var errors = req.validationErrors();
 		if (errors) {
 			res.status(400).json({status: errors});
 			return
 		}
 
-		controller.addWord(req, res);
+		var word = req.body.word;
+		controller.addWord(word, function (err, data) {
+			if (err) {
+				res.status(err.code).json({status: err.error});
+			} else {
+				res.status(200).json(data);
+			}	
+		});
 	})
 	.put(function(req, res) {
-		req.checkBody('oldWord', msgNEisAcii)
-			.isWord().isAscii();
-		req.checkBody('newWord', msgNEisAcii)
-			.isWord().isAscii();
+		req.checkBody('oldWord', msgNEisAlphanum)
+			.isWord().isAlphanumeric();
+		req.checkBody('newWord', msgNEisAlphanum)
+			.isWord().isAlphanumeric();
 
 		var errors = req.validationErrors();
 		if (errors) {
@@ -41,18 +50,35 @@ router.route('/words')
 			return
 		}
 
-		controller.updateWord(req, res);
+		var props = {
+			oldWord: req.body.oldWord,
+			newWord: req.body.newWord
+		};
+		controller.updateWord(props, function (err, data) {
+			if (err) {
+				res.status(err.code).json({status: err.error});
+			} else {
+				res.status(200).json(data);
+			}			
+		});
 	})
 	.delete(function(req, res) {
-		req.checkBody('word', msgNEisAcii)
-			.isWord().isAscii();
+		req.checkBody('word', msgNEisAlphanum)
+			.isWord().isAlphanumeric();
 		var errors = req.validationErrors();
 		if (errors) {
 			res.status(400).json({status: errors});
 			return
 		}
 
-		controller.delWord(req, res);
+		var word = req.body.word;
+		controller.delWord(word, function (err, data) {
+			if (err) {
+				res.status(err.code).json({status: err.error});
+			} else {
+				res.status(200).json(data);
+			}	
+		});
 	})
 
 module.exports = router;
